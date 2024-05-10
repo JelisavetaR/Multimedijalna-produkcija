@@ -202,3 +202,14 @@ function detectCollision(a, b) {
            a.y < b.y + b.height &&  //a's top left corner doesn't reach b's bottom left corner
            a.y + a.height > b.y;    //a's bottom left corner passes b's top left corner
 }
+
+function updateScore() { let points = Math.floor(50*Math.random()); //(0-1) 50 --> (0-50) 
+if (velocityY < 0) { //negative going up 
+    maxScore += points;
+    if (score < maxScore) 
+    { score = maxScore; } 
+} 
+else if (velocityY >= 0) {
+     maxScore -= points; 
+    } 
+}
