@@ -212,4 +212,5 @@ if (velocityY < 0) { //negative going up
 else if (velocityY >= 0) {
      maxScore -= points; 
     } 
+    
 }
