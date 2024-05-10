@@ -117,3 +117,88 @@ function update() {
         context.fillText("Game Over: Press 'Space' to Restart", boardWidth/7, boardHeight*7/8);
     }
 }
+
+function moveDoodler(e) {
+    if (e.code == "ArrowRight" || e.code == "KeyD") { //move right
+        velocityX = 4;
+        doodler.img = doodlerRightImg;
+    }
+    else if (e.code == "ArrowLeft" || e.code == "KeyA") { //move left
+        velocityX = -4;
+        doodler.img = doodlerLeftImg;
+    }
+    else if (e.code == "Space" && gameOver) {
+        //reset
+        doodler = {
+            img : doodlerRightImg,
+            x : doodlerX,
+            y : doodlerY,
+            width : doodlerWidth,
+            height : doodlerHeight
+        }
+
+        velocityX = 0;
+        velocityY = initialVelocityY;
+        score = 0;
+        maxScore = 0;
+        gameOver = false;
+        placePlatforms();
+    }
+}
+
+function placePlatforms() {
+    platformArray = [];
+
+    //starting platforms
+    let platform = {
+        img : platformImg,
+        x : boardWidth/2,
+        y : boardHeight - 50,
+        width : platformWidth,
+        height : platformHeight
+    }
+
+    platformArray.push(platform);
+
+    // platform = {
+    //     img : platformImg,
+    //     x : boardWidth/2,
+    //     y : boardHeight - 150,
+    //     width : platformWidth,
+    //     height : platformHeight
+    // }
+    // platformArray.push(platform);
+
+    for (let i = 0; i < 6; i++) {
+        let randomX = Math.floor(Math.random() * boardWidth*3/4); //(0-1) * boardWidth*3/4
+        let platform = {
+            img : platformImg,
+            x : randomX,
+            y : boardHeight - 75*i - 150,
+            width : platformWidth,
+            height : platformHeight
+        }
+   
+        platformArray.push(platform);
+    }
+}
+
+function newPlatform() {
+    let randomX = Math.floor(Math.random() * boardWidth*3/4); //(0-1) * boardWidth*3/4
+    let platform = {
+        img : platformImg,
+        x : randomX,
+        y : -platformHeight,
+        width : platformWidth,
+        height : platformHeight
+    }
+
+    platformArray.push(platform);
+}
+
+function detectCollision(a, b) {
+    return a.x < b.x + b.width &&   //a's top left corner doesn't reach b's top right corner
+           a.x + a.width > b.x &&   //a's top right corner passes b's top left corner
+           a.y < b.y + b.height &&  //a's top left corner doesn't reach b's bottom left corner
+           a.y + a.height > b.y;    //a's bottom left corner passes b's top left corner
+}
